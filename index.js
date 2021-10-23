@@ -31,8 +31,8 @@ inquirer.prompt([
       addIntern();
       
     }
-    if (selection === "Done"){
-      generateHTML()
+    if (selection === "Finish"){
+      generateHTML(team)
       
     }
   
@@ -59,7 +59,7 @@ function addManager(){
   {
     type: "input",
     message: "What is the Managers office number?",
-    name: "github",
+    name: "officeNumber",
   },
   ]) .then((response) =>{
     let manager = new Manager(response.name, response.idNumber, response.email, response.officeNumber)
@@ -131,8 +131,8 @@ function addIntern(){
   })
 
 }
-function generateHTML(response){
-  let teamProfile= `
+function generateHTML(team){
+  const teamProfile= `
 
   <!DOCTYPE html>
 <html lang="en">
@@ -150,9 +150,9 @@ function generateHTML(response){
 
 <div>  
     <ul>  
-      <li id= 'manager'> ${response.manager}</li>
-      <li id= 'engineer'> ${response.engineer}</li>
-      <li id= 'intern'>${response.intern} </li>
+      <li id= 'manager'> ${team.manager}</li>
+      <li id= 'engineer'> ${team.engineer}</li>
+      <li id= 'intern'>${team.intern} </li>
     </ul>
 </div>
 
@@ -171,6 +171,7 @@ function generateHTML(response){
     err ? console.log("Big trouble my dude!") : console.log("Cool beans!");
   
 });
+console.log("Hello", team)
 }
 
 createTeam();
