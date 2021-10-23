@@ -1,10 +1,16 @@
 let inquirer = require('inquirer');
+const path = require("path");
 const fs = require("fs");
 
 const Employee = require("./public/employee")
 const Manager = require("./public/manager");
 const Engineer = require("./public/engineer");
 const Intern = require("./public/intern");
+
+const render = require("./public/htmlRenderer");
+
+const OUTPUT_DIR = path.resolve(__dirname, "./dist");
+const outputPath = path.join(OUTPUT_DIR, "teamProfile.html");
 
 let team = [];
 
@@ -132,46 +138,30 @@ function addIntern(){
 
 }
 function generateHTML(team){
-  const teamProfile= `
+  console.log('team',team);
+  let html = render(team);
+  console.log('html',html);
+  if(html){
+    console.log('Try', typeof z);
+    renderHTML(html);
+  }
 
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+}
 
-<link rel="stylesheet" href="./assets/style.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<title></title>
-</head>
-<body>
-
-<div>  
-    <ul>  
-      <li id= 'manager'> ${team.manager}</li>
-      <li id= 'engineer'> ${team.engineer}</li>
-      <li id= 'intern'>${team.intern} </li>
-    </ul>
-</div>
-
-
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="./assets/script.js"></script>
-</body>
-</html> `
-
-    return fs.writeFile("teamProfile.html ", teamProfile, (err) => {
-    err ? console.log("Big trouble my dude!") : console.log("Cool beans!");
-  
-});
-console.log("Hello", team)
+function renderHTML(html){
+  console.log('Trying');
+  if (!fs.existsSync(OUTPUT_DIR)){
+    fs.mkdirSync(OUTPUT_DIR);
+    fs.appendFile(outputPath, html, function (err) {
+      if (err) throw err;
+      console.log('Success!');
+    });
+  }else{
+    fs.appendFile(outputPath, html, function (err) {
+      if (err) throw err;
+      console.log('Success!');
+    });
+  }
 }
 
 createTeam();
